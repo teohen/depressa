@@ -4,7 +4,6 @@
 import tweepy #https://github.com/tweepy/tweepy
 import credenciais
 import csv
-import json 
 
 #Twitter API credentials
 consumer_key = credenciais.CONSUMER_KEY
@@ -52,12 +51,12 @@ def get_all_tweets(screen_name):
 		print ("...%s tweets downloaded so far" % (len(alltweets)))
 	
 	#transform the tweepy tweets into a 2D array that will populate the csv	
-	outtweets = [json.dumps(tweet) for tweet in alltweets]
+	outtweets = [[tweet.id_str, tweet.created_at, tweet.text.encode("utf-8")] for tweet in alltweets]
 	
-	# teste = ', '.join(outtweets)
+	teste = ', '.join(outtweets)
 
 	with open('%s_tweets.json' % screen_name, 'wb') as tf:
-		tf.write(outtweets)
+		tf.write(teste)
 
 
 	#write the csv	
