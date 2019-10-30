@@ -4,6 +4,7 @@
 import tweepy #https://github.com/tweepy/tweepy
 import credenciais
 import csv
+import json 
 
 #Twitter API credentials
 consumer_key = credenciais.CONSUMER_KEY
@@ -51,17 +52,24 @@ def get_all_tweets(screen_name):
 		print ("...%s tweets downloaded so far" % (len(alltweets)))
 	
 	#transform the tweepy tweets into a 2D array that will populate the csv	
-	outtweets = [[tweet.id_str, tweet.created_at, tweet.text.encode("utf-8")] for tweet in alltweets]
+	outtweets = [json.dumps(tweet) for tweet in alltweets]
 	
+	# teste = ', '.join(outtweets)
+
+	with open('%s_tweets.json' % screen_name, 'wb') as tf:
+		tf.write(outtweets)
+
+
 	#write the csv	
 	with open('%s_tweets.csv' % screen_name, 'wb') as f:
-		writer = csv.writer(f)
-		writer.writerow(["id","created_at","text"])
-		writer.writerows(outtweets)
+		if (type(outtweets) is not str) :
+			writer = csv.writer(f)
+			writer.writerow(["id","created_at","text"])
+			writer.writerows(outtweets)
 	
 	pass
 
 
 if __name__ == '__main__':
 	#pass in the username of the account you want to download
-	get_all_tweets("teohen")
+	get_all_tweets("ggrassioto")

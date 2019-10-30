@@ -6,7 +6,7 @@ class TwitterListener(StreamListener):
 
     def on_data(self, data):
         try:
-            print(data)
+            print(type(data))
             with open(self.fetched_tweets_filename, 'a') as tf:
                 tf.write(data)
             return True
